@@ -34,7 +34,8 @@ function SignInButton() {
     const router = useRouter();
     const textColor = useColorModeValue("gray.600", "gray.300");
     const loginBtnBg = useColorModeValue("yellow.300", "yellow.600");
-  
+    
+    // Loading
     if (isLoading) {
       return (
         <Button
@@ -48,7 +49,8 @@ function SignInButton() {
         />
       );
     }
-  
+
+    // Logged in
     if (user) {
       return (
         <Menu>
@@ -72,7 +74,7 @@ function SignInButton() {
           </MenuButton>
           <MenuList>
             <MenuGroup title="Account">
-              <Link href="/user/info">
+              <Link href="/user/profile">
                 <MenuItem>Profile</MenuItem>
               </Link>
               {/* <Link href="/user/my">
@@ -130,7 +132,8 @@ function SignInButton() {
         </Menu>
       );
     }
-  
+
+    // Not logged in
     return (
       <>
         <Menu>
@@ -200,13 +203,13 @@ function SignInButton() {
         <Flex justifyContent="center" alignItems="center">
           <Link href="/" passHref>
             <Flex alignItems="center" flexDirection="row" cursor="pointer">
-              {/* <Image
-                src={`/img/ncn_logo.png`}
+              <Image
+                src={`/logo.png`}
                 alt="ncnLogo"
-                width="25"
-                height="25"
+                width="30"
+                height="30"
                 layout="fixed"
-              /> */}
+              />
               <Heading
                 ml="2"
                 fontSize={{ base: "lg", md: "xl" }}
