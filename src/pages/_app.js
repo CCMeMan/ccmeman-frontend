@@ -1,4 +1,6 @@
 import '../styles/globals.css';
+import  "../styles/DateTimePicker.css";
+
 import React from 'react';
 import { UserProvider } from '@auth0/nextjs-auth0';
 import { ChakraProvider, Flex } from "@chakra-ui/react";

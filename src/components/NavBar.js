@@ -221,7 +221,7 @@ function SignInButton() {
               </Heading>
             </Flex>
           </Link>
-          <Link href="/groups">
+          <Link href="/group">
             <Button
               variant="ghost"
               size="md"

@@ -26,6 +26,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 // import Select, { StylesConfig, GroupBase } from "react-select";
+import axios from "axios";
 import { HashLoader } from "react-spinners";
 import { FaExclamationTriangle } from "react-icons/fa";
 import { useRouter } from "next/router";
@@ -36,7 +37,69 @@ import {
 } from "@auth0/nextjs-auth0";
 
 export default function UserProfilePage() {
+  const toast = useToast();
+  const createUser = async () => {
+    try {
+      console.log("create");
+      const { data } = await axios.post("/api/user/create", {});
+      return data;
+    } catch (e) {
+      console.log(e);
+      // toast({
+      //   title: "刪除用戶帳號失敗.",
+      //   status: "error",
+      //   duration: 3000,
+      //   isClosable: true,
+      // });
+      // if ((e as AxiosError)?.response?.status === 401) {
+      //   router.push("/api/auth/login");
+      // }
+    }
+  };
+
+  const updateUser = async () => {
+    try {
+      await axios.post("/api/user/update", {
+        name: name,
+        email: email,
+      });
+      toast({
+        title: "Update Success",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    } catch (e) {
+      console.log(e);
+      toast({
+        title: "Update Fail",
+        description: "Please try again or contact service.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
+
+  // Auth0 User State
   const { user, error, isLoading } = useUser();
+
+  // User Info States
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+
+  // Create User to get current User Info in DB.
+  useEffect(() => {
+    const getUserInfo = async () => {
+      const initialUserInfo = await createUser();
+      console.log(initialUserInfo);
+      setName(initialUserInfo.name ?? user?.name ?? "");
+      setEmail(initialUserInfo.email ?? user?.email ?? "");
+    };
+    getUserInfo();
+    console.log("effect");
+  }, [isLoading]);
+
   return (
     <Box m={{ base: 5, md: 10, lg: 40 }}>
       <Text fontSize="2xl" fontWeight="700" color="gray.800">
@@ -82,6 +145,28 @@ export default function UserProfilePage() {
             disabled
           />
         </Flex>
+        <Flex p="10" w="100%" flexDirection="column">
+          <Button
+            colorScheme="teal"
+            size="md"
+            my="4"
+            onClick={async () => {
+              createUser();
+            }}
+          >
+            Create User
+          </Button>
+          <Button
+            colorScheme="teal"
+            size="md"
+            my="4"
+            onClick={async () => {
+              updateUser();
+            }}
+          >
+            Update User
+          </Button>
+        </Flex>
       </Flex>
       <Box p="10" />
       <Text fontSize="2xl" fontWeight="700" color="gray.800">
@@ -97,7 +182,7 @@ export default function UserProfilePage() {
             bg="white"
             fontSize="lg"
             fontWeight="500"
-            defaultValue={user?.name ?? ""}
+            defaultValue={name}
             onChange={(e) => {
               setName(e.currentTarget.value);
             }}
@@ -111,7 +196,7 @@ export default function UserProfilePage() {
             bg="white"
             fontSize="lg"
             fontWeight="500"
-            defaultValue={user?.email ?? ""}
+            defaultValue={email}
             disabled
           />
         </Flex>
