@@ -23,6 +23,16 @@ export const getGroups = async (token) => {
   return data;
 };
 
+export const getGroup = async (token, group_nanoid) => {
+  console.log("queries/group.js/getGroup");
+  const { data } = await instance.get(`${api_version}/groups/${group_nanoid}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return data;
+};
+
 // export const updateUser = async (token, userInfo) => {
 //   console.log("queries/user.js/updateUser");
 //   console.log(userInfo);

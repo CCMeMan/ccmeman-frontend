@@ -67,8 +67,12 @@ export default function UserGroupsPage() {
 
   const createGroup = async () => {
     try {
+      const { data } = await axios.post("/api/user/create", {});
+      const public_email = data.email;
+
       await axios.post("/api/group/create", {
         group_name: newGroupName,
+        public_email: public_email,
       });
       toast({
         title: "Update Success",
