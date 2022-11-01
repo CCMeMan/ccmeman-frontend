@@ -5,19 +5,15 @@ import React, { useState } from "react";
 // import "react-datepicker/dist/react-datepicker.css";
 // import "src/styles/date-picker.module.css";
 
-const Meeting = () => {
+const GroupProfile = () => {
   const router = useRouter();
-  const { group_suuid } = router.query;
+  const { group_nanoid } = router.query;
   const [startDate, setStartDate] = useState(new Date());
   return (
     <>
-      <p>
-        Group: {group_suuid}
-      </p>
-
-      
+      <p>Group: {group_nanoid}</p>
     </>
   );
 };
 
-export default Meeting;
+export default GroupProfile;

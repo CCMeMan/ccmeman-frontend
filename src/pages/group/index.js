@@ -131,7 +131,7 @@ export default function UserGroupsPage() {
             mx="4"
             fontSize="xl"
             fontWeight="700"
-            href={"group/" + props.group.sUUID}
+            href={"group/" + props.group.nanoId}
           >
             {props.group.name}
           </Link>

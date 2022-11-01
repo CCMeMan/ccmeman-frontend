@@ -38,6 +38,7 @@ import {
 
 export default function UserProfilePage() {
   const toast = useToast();
+
   const createUser = async () => {
     try {
       console.log("create");
@@ -45,15 +46,32 @@ export default function UserProfilePage() {
       return data;
     } catch (e) {
       console.log(e);
-      // toast({
-      //   title: "刪除用戶帳號失敗.",
-      //   status: "error",
-      //   duration: 3000,
-      //   isClosable: true,
-      // });
+      toast({
+        title: "Register User Fail.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
       // if ((e as AxiosError)?.response?.status === 401) {
       //   router.push("/api/auth/login");
       // }
+    }
+  };
+
+  const getUser = async () => {
+    try {
+      // Currently, using create (POST) to get user info.
+      console.log("getUser");
+      const { data } = await axios.post("/api/user/create", {});
+      return data;
+    } catch (e) {
+      console.log(e);
+      toast({
+        title: "Get User Info. Fail.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
     }
   };
 
@@ -89,15 +107,19 @@ export default function UserProfilePage() {
   const [email, setEmail] = useState("");
 
   // Create User to get current User Info in DB.
+  // useEffect(() => {
+  //   createUser();
+  // }, [isLoading]);
+
   useEffect(() => {
     const getUserInfo = async () => {
-      const initialUserInfo = await createUser();
+      const initialUserInfo = await getUser();
       console.log(initialUserInfo);
       setName(initialUserInfo.name ?? user?.name ?? "");
       setEmail(initialUserInfo.email ?? user?.email ?? "");
     };
     getUserInfo();
-    console.log("effect");
+    console.log("getUserInfo");
   }, [isLoading]);
 
   return (

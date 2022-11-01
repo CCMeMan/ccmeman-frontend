@@ -8,12 +8,12 @@ import { DateTimePicker } from "src/components/DateTimePicker.js";
 
 const Meeting = () => {
   const router = useRouter();
-  const { group_suuid, meeting_suuid } = router.query;
+  const { group_nanoid, meeting_nanoid } = router.query;
   const [startDate, setStartDate] = useState(new Date());
   return (
     <>
       <p>
-        Group: {group_suuid}, Meeting {meeting_suuid}
+        Group: {group_nanoid}, Meeting {meeting_nanoid}
       </p>
 
       <DateTimePicker
