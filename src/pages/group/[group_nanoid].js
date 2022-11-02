@@ -120,10 +120,6 @@ const GroupProfile = () => {
     }
   };
 
-  // const getMeetings = async () => {
-  //   setExistingMeetings(existingGroup.meetings);
-  // };
-
   const GroupItem = (props) => {
     var isManager;
     props.group.users.map((item) => {
@@ -220,18 +216,10 @@ const GroupProfile = () => {
   }
   return (
     <Box my={{ base: 5, md: 10, lg: 10 }} mx={{ base: 5, md: 10, lg: 40 }}>
-      <Text fontSize="3xl" fontWeight="700" color="gray.800">
-        Group Profile: {existingGroup.name}
+      <Text fontSize="4xl" fontWeight="700" color="gray.800">
+        Group: {existingGroup.name}
       </Text>
       <Divider mt="1" mb="4" />
-      <Flex
-        mx={{ base: 5, md: 10 }}
-        divider={<StackDivider borderColor="gray.200" />}
-        spacing={2}
-        align="stretch"
-      >
-        {JSON.stringify(existingGroup)}
-      </Flex>
       <Flex p="4" />
 
       <Text fontSize="3xl" fontWeight="700" color="gray.800">
@@ -291,10 +279,10 @@ const GroupProfile = () => {
       <Flex p="4" />
 
       <Text fontSize="3xl" fontWeight="700" color="gray.800">
-        Groups
+        Sub-Groups
       </Text>
       <Divider mt="1" mb="4" />
-      <VStack
+      {/* <VStack
         mx={{ base: 5, md: 10 }}
         divider={<StackDivider borderColor="gray.200" />}
         spacing={2}
@@ -327,7 +315,21 @@ const GroupProfile = () => {
             Create Group{" "}
           </Button>
         </Flex>
-      </VStack>
+      </VStack> */}
+      <Flex p="4" />
+      <Text fontSize="3xl" fontWeight="700" color="gray.800">
+        Group Profile
+      </Text>
+      <Divider mt="1" mb="4" />
+      <Flex
+        mx={{ base: 5, md: 10 }}
+        divider={<StackDivider borderColor="gray.200" />}
+        spacing={2}
+        align="stretch"
+      >
+        {JSON.stringify(existingGroup)}
+      </Flex>
+      <Flex p="4" />
     </Box>
   );
 };
