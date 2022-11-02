@@ -14,6 +14,8 @@ import {
   HStack,
   VStack,
   StackDivider,
+  Grid,
+  GridItem,
   AlertDialog,
   AlertDialogBody,
   AlertDialogFooter,
@@ -40,6 +42,33 @@ const GroupProfile = () => {
   const toast = useToast();
   const router = useRouter();
   const { group_nanoid } = router.query;
+
+  const createMeeting = async () => {
+    try {
+      const { data } = await axios.post("/api/user/create", {});
+      const public_email = data.email;
+
+      await axios.post(`/api/meeting/${group_nanoid}/create`, {
+        meeting_name: newMeetingName,
+      });
+      toast({
+        title: "Update Success",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+      getGroup();
+    } catch (e) {
+      console.log(e);
+      toast({
+        title: "Update Fail",
+        description: "Please try again or contact service.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
 
   const getGroup = async () => {
     try {
@@ -91,6 +120,10 @@ const GroupProfile = () => {
     }
   };
 
+  // const getMeetings = async () => {
+  //   setExistingMeetings(existingGroup.meetings);
+  // };
+
   const GroupItem = (props) => {
     var isManager;
     props.group.users.map((item) => {
@@ -122,15 +155,58 @@ const GroupProfile = () => {
     );
   };
 
+  const MeetingItem = (props) => {
+    var isManager;
+    existingGroup.users.map((item) => {
+      if (item.user.userIdFromAuth0 === user.sub) {
+        if (Object.values(item.role).includes("MANAGER")) {
+          isManager = true;
+        }
+      }
+    });
+    return (
+      <HStack>
+        <Grid w="100%" templateColumns="repeat(10, 1fr)" gap={5}>
+          <GridItem my={0} colStart={1} colEnd={6}>
+            <Link
+              // my="0"
+              // mx="4"
+
+              href={`/meeting/${group_nanoid}/` + props.meeting.nanoId}
+            >
+              <Flex _hover={{ bg: "green.50" }} h="100%" w="100%">
+                <Text my={1} ml="6" fontSize="xl" fontWeight="500">
+                  {props.meeting.name}
+                </Text>
+              </Flex>
+            </Link>
+          </GridItem>
+          <GridItem my={1} colStart={6} colEnd={10}>
+            <Text py={1} pl="1" fontSize="l" color="gray.500">
+              {props.meeting.updatedAt}
+            </Text>
+          </GridItem>
+          <GridItem align="right">
+            <Button colorScheme="red" variant="outline" disabled={!isManager}>
+              Delete
+            </Button>
+          </GridItem>
+        </Grid>
+      </HStack>
+    );
+  };
+
   // Auth0 User State
   const { user, error, isLoading } = useUser();
 
   // New Group Info States
   const [newGroupName, setNewGroupName] = useState("");
+  const [newMeetingName, setNewMeetingName] = useState("");
 
   // Existing Group Info States
   const [existingGroups, setExistingGroups] = useState([]);
-  const [existingGroup, setExistingGroup] = useState([]);
+  const [existingGroup, setExistingGroup] = useState({ meetings: [] });
+  // const [existingMeetings, setExistingMeetings] = useState([]);
 
   //   Referesh current Group list.
   useEffect(() => {
@@ -139,6 +215,9 @@ const GroupProfile = () => {
     console.log("effect");
   }, [isLoading]);
 
+  if (isLoading) {
+    return <Text>Is Loading...</Text>;
+  }
   return (
     <Box my={{ base: 5, md: 10, lg: 10 }} mx={{ base: 5, md: 10, lg: 40 }}>
       <Text fontSize="3xl" fontWeight="700" color="gray.800">
@@ -165,28 +244,44 @@ const GroupProfile = () => {
         spacing={2}
         align="stretch"
       >
-        {/* <Text mx={4} fontSize="2xl" fontWeight="700" color="gray.800">
-          Name
-        </Text> */}
+        <Grid w="100%" templateColumns="repeat(10, 1fr)" gap={5}>
+          <GridItem my={1} colStart={1} colEnd={6}>
+            <Text my="0" mx="4" fontSize="2xl" fontWeight="600">
+              Name
+            </Text>
+          </GridItem>
+          <GridItem my={1} colStart={6} colEnd={10}>
+            <Text fontSize="2xl" fontWeight="600">
+              Last Updated
+            </Text>
+          </GridItem>
+          <GridItem align="right">
+            {/* <Button colorScheme="red" disabled={!isManager}>
+              Delete
+            </Button> */}
+          </GridItem>
+        </Grid>
 
-        {existingGroups.map((item) => {
-          return <GroupItem key={item.id} group={item} />;
+        {/* <Text>{JSON.stringify(existingGroup.meetings)}</Text> */}
+        {existingGroup.meetings.map((item) => {
+          return <MeetingItem key={item.id} meeting={item} />;
         })}
 
-        <Flex mx={4}>
+        <Flex mx={0}>
           <Input
             mr={2}
             type="text"
             id="meeting-name"
             placeholder="New Meeting Name"
             onChange={(e) => {
-              // setNewGroupName(e.currentTarget.value);
+              setNewMeetingName(e.currentTarget.value);
             }}
           ></Input>
           <Button
+            // variant="outline"
             colorScheme="green"
             onClick={async () => {
-              // createGroup();
+              createMeeting();
             }}
           >
             Create Meeting
@@ -226,7 +321,7 @@ const GroupProfile = () => {
           <Button
             colorScheme="green"
             onClick={async () => {
-              createGroup();
+              // createGroup();
             }}
           >
             Create Group{" "}

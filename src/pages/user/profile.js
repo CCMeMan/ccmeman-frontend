@@ -122,6 +122,9 @@ export default function UserProfilePage() {
     console.log("getUserInfo");
   }, [isLoading]);
 
+  if (isLoading) {
+    return <Text>Is Loading...</Text>;
+  }
   return (
     <Box m={{ base: 5, md: 10, lg: 40 }}>
       <Text fontSize="2xl" fontWeight="700" color="gray.800">
