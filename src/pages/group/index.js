@@ -42,41 +42,29 @@ import {
 export default function UserGroupsPage() {
   const toast = useToast();
 
-  //   const GroupList = (props) => {
-  //     return existingGroups.map((item) => {
-  //       return <GroupItem group={{ name: item.name }} />;
-  //     });
-  //   };
-  //   const createUser = async () => {
-  //     try {
-  //       console.log("create");
-  //       const { data } = await axios.post("/api/user/create", {});
-  //       return data;
-  //     } catch (e) {
-  //       console.log(e);
-  //       // toast({
-  //       //   title: "刪除用戶帳號失敗.",
-  //       //   status: "error",
-  //       //   duration: 3000,
-  //       //   isClosable: true,
-  //       // });
-  //       // if ((e as AxiosError)?.response?.status === 401) {
-  //       //   router.push("/api/auth/login");
-  //       // }
-  //     }
-  //   };
+  // React State Hooks
+  const { user, error, isLoading } = useUser(); // Auth0 User State
+  const [newGroupName, setNewGroupName] = useState(""); // New Group Info States
+  const [existingGroups, setExistingGroups] = useState([]); // Existing Group Info States
+
+  // Referesh current Group list.
+  useEffect(() => {
+    getGroups();
+    console.log("effect");
+  }, [isLoading]);
 
   const createGroup = async () => {
     try {
-      const { data } = await axios.post("/api/user/create", {});
+      const { data } = await axios.get("/api/user", {});
       const public_email = data.email;
 
-      await axios.post("/api/group/create", {
+      await axios.post("/api/group", {
         group_name: newGroupName,
         public_email: public_email,
       });
       toast({
-        title: "Update Success",
+        title: "Group Creation Success",
+        description: `Group ${newGroupName} has been created`,
         status: "success",
         duration: 3000,
         isClosable: true,
@@ -91,12 +79,16 @@ export default function UserGroupsPage() {
         duration: 3000,
         isClosable: true,
       });
+      // TODO: Error Handling
+      // if ((e as AxiosError)?.response?.status === 401) {
+      //     router.push("/api/auth/login");
+      // }
     }
   };
 
   const getGroups = async () => {
     try {
-      const { data } = await axios.post("/api/group/get", {});
+      const { data } = await axios.get("/api/group", {});
       //   data.map((item) => {
       //     console.log(item);
       //   });
@@ -150,21 +142,8 @@ export default function UserGroupsPage() {
     );
   };
 
-  // Auth0 User State
-  const { user, error, isLoading } = useUser();
-
-  // New Group Info States
-  const [newGroupName, setNewGroupName] = useState("");
-
-  // Existing Group Info States
-  const [existingGroups, setExistingGroups] = useState([]);
-
-  //   Referesh current Group list.
-  useEffect(() => {
-    getGroups();
-    console.log("effect");
-  }, [isLoading]);
-
+  // Return Page
+  // FIXME: change isLoading from Auth0 to a real "loading" indicator
   if (isLoading) {
     return (
       <Center h="100vh">

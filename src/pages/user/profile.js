@@ -42,7 +42,7 @@ export default function UserProfilePage() {
   const createUser = async () => {
     try {
       console.log("create");
-      const { data } = await axios.post("/api/user/create", {});
+      const { data } = await axios.post("/api/user", {});
       return data;
     } catch (e) {
       console.log(e);
@@ -62,7 +62,7 @@ export default function UserProfilePage() {
     try {
       // Currently, using create (POST) to get user info.
       console.log("getUser");
-      const { data } = await axios.post("/api/user/create", {});
+      const { data } = await axios.get("/api/user", {});
       return data;
     } catch (e) {
       console.log(e);
@@ -77,7 +77,7 @@ export default function UserProfilePage() {
 
   const updateUser = async () => {
     try {
-      await axios.post("/api/user/update", {
+      await axios.put("/api/user", {
         name: name,
         email: email,
       });

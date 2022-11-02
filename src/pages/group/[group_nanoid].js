@@ -40,21 +40,19 @@ import {
   UserProfile,
 } from "@auth0/nextjs-auth0";
 
-const GroupProfile = () => {
+// Main React Component
+const GroupPage = () => {
   const toast = useToast();
   const router = useRouter();
   const { group_nanoid } = router.query;
 
   const createMeeting = async () => {
     try {
-      const { data } = await axios.post("/api/user/create", {});
-      const public_email = data.email;
-
-      await axios.post(`/api/meeting/${group_nanoid}/create`, {
+      await axios.post(`/api/meeting/${group_nanoid}`, {
         meeting_name: newMeetingName,
       });
       toast({
-        title: "Update Success",
+        title: "Create Meeting Success",
         status: "success",
         duration: 3000,
         isClosable: true,
@@ -74,7 +72,7 @@ const GroupProfile = () => {
 
   const getGroup = async () => {
     try {
-      const { data } = await axios.post(`/api/group/get/${group_nanoid}`, {});
+      const { data } = await axios.get(`/api/group/${group_nanoid}`, {});
       //   data.map((item) => {
       //     console.log(item);
       //   });
@@ -99,7 +97,7 @@ const GroupProfile = () => {
 
   const getGroups = async () => {
     try {
-      const { data } = await axios.post("/api/group/get", {});
+      const { data } = await axios.get("/api/group", {});
       //   data.map((item) => {
       //     console.log(item);
       //   });
@@ -206,7 +204,8 @@ const GroupProfile = () => {
   const [existingGroup, setExistingGroup] = useState({ meetings: [] });
   // const [existingMeetings, setExistingMeetings] = useState([]);
 
-  //   Referesh current Group list.
+  //  Referesh current Group list.
+  //  FIXME: We should separate getMeeting/Group and setExistingMeeting/Group (side effects)
   useEffect(() => {
     getGroups();
     getGroup();
@@ -340,5 +339,5 @@ const GroupProfile = () => {
   );
 };
 
-export default GroupProfile;
+export default GroupPage;
 export const getServerSideProps = withPageAuthRequired();
