@@ -27,6 +27,7 @@ import {
   Badge,
   useColorModeValue,
 } from "@chakra-ui/react";
+import ClipLoader from "react-spinners/ClipLoader";
 // import Select, { StylesConfig, GroupBase } from "react-select";
 import axios from "axios";
 import { HashLoader } from "react-spinners";
@@ -164,6 +165,13 @@ export default function UserGroupsPage() {
     console.log("effect");
   }, [isLoading]);
 
+  if (isLoading) {
+    return (
+      <Center h="100vh">
+        <ClipLoader color="#36d7b7" />
+      </Center>
+    );
+  }
   return (
     <Box my={{ base: 5, md: 10, lg: 10 }} mx={{ base: 5, md: 10, lg: 40 }}>
       <Text fontSize="3xl" fontWeight="700" color="gray.800">

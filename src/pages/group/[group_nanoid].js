@@ -27,6 +27,8 @@ import {
   Badge,
   useColorModeValue,
 } from "@chakra-ui/react";
+import ClipLoader from "react-spinners/ClipLoader";
+
 // import Select, { StylesConfig, GroupBase } from "react-select";
 import axios from "axios";
 import { HashLoader } from "react-spinners";
@@ -212,7 +214,11 @@ const GroupProfile = () => {
   }, [isLoading]);
 
   if (isLoading) {
-    return <Text>Is Loading...</Text>;
+    return (
+      <Center h="100vh">
+        <ClipLoader color="#36d7b7" />
+      </Center>
+    );
   }
   return (
     <Box my={{ base: 5, md: 10, lg: 10 }} mx={{ base: 5, md: 10, lg: 40 }}>
