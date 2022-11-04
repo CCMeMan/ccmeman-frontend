@@ -159,7 +159,7 @@ function SignInButton() {
               m="2"
               mr="4"
               onClick={() => {
-                reportEvent("header", "click", "login");
+                // reportEvent("header", "click", "login");
                 router.push("/api/auth/login");
               }}
             >

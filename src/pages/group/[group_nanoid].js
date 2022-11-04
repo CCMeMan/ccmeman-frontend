@@ -276,7 +276,7 @@ const GroupPage = () => {
                         </p>
                       </a>
                     </div>
-                    <div className="sm:flex sm:w-6/12 items-center text-sm text-gray-800">
+                    <div className="flex sm:w-6/12 items-center text-sm text-gray-800">
                       <CalendarIcon
                         className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
                         aria-hidden="true"
@@ -293,8 +293,8 @@ const GroupPage = () => {
                       </p> */}
                     </div>
 
-                    <div className="mt-4 flex-shrink-0 sm:mt-0 sm:ml-5">
-                      {/* <div className="flex -space-x-1 overflow-hidden">
+                    {/* <div className="mt-4 flex-shrink-0 sm:mt-0 sm:ml-5">
+                      <div className="flex -space-x-1 overflow-hidden">
                         {position.applicants.map((applicant) => (
                           <img
                             key={applicant.email}
@@ -303,15 +303,15 @@ const GroupPage = () => {
                             alt={applicant.name}
                           />
                         ))}
-                      </div> */}
-                    </div>
+                      </div>
+                    </div> */}
                   </div>
                   <button
                     type="button"
                     className="hidden sm:inline-flex items-center rounded-md 
                     disabled:opacity-50
                       border border-transparent
-                       bg-red-600 px-4 py-2 text-sm font-medium
+                       bg-red-600 px-2 py-1 text-sm font-medium
                        text-white shadow-sm
                        enabled:hover:bg-red-700 enabled:active:bg-red-800"
                     // disabled
