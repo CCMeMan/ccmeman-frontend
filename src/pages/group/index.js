@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 import { useState, useRef, useEffect } from "react";
 import {
@@ -9,7 +10,6 @@ import {
   Text,
   Divider,
   Avatar,
-  Link,
   Input,
   Button,
   useToast,
@@ -214,11 +214,11 @@ export default function UserGroupsPage() {
               <li key={item.id}>
                 <div className="flex items-center px-4 py-4 sm:px-6 hover:bg-gray-50">
                   <div className="min-w-0 sm:flex-1 sm:items-center sm:justify-between">
-                    <a
+                    <Link
                       href={"group/" + item.nanoId}
                       className="hover:underline decoration-solid"
                     >
-                      <div className="text-sm">
+                      <div className="">
                         <p className="truncate font-medium text-indigo-600">
                           {item.name}
                         </p>
@@ -242,8 +242,8 @@ export default function UserGroupsPage() {
                           </p>
                         </div>
                       </div>
-                      <div className="mt-4 flex-shrink-0 sm:mt-0 sm:ml-5">
-                        {/* <div className="flex -space-x-1 overflow-hidden">
+                      {/* <div className="mt-4 flex-shrink-0 sm:mt-0 sm:ml-5">
+                        <div className="flex -space-x-1 overflow-hidden">
                         {position.applicants.map((applicant) => (
                           <img
                             key={applicant.email}
@@ -252,13 +252,13 @@ export default function UserGroupsPage() {
                             alt={applicant.name}
                           />
                         ))}
-                      </div> */}
                       </div>
-                    </a>
+                      </div> */}
+                    </Link>
                   </div>
                   <button
                     type="button"
-                    className="inline-flex items-center rounded-md 
+                    className="hidden sm:inline-flex items-center rounded-md 
                     disabled:opacity-50
                       border border-transparent
                        bg-red-600 px-4 py-2 text-sm font-medium

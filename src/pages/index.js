@@ -1,7 +1,9 @@
-import Head from 'next/head'
-import Image from 'next/image'
+import Head from "next/head";
+import Image from "next/image";
+import Link from "next/link";
+
 // import styles from '../styles/Home.module.css'
-import { useUser } from '@auth0/nextjs-auth0';
+import { useUser } from "@auth0/nextjs-auth0";
 
 function Profile() {
   const { user, error, isLoading } = useUser();
@@ -21,19 +23,15 @@ function Profile() {
   );
 }
 
-
-
-
-
 export default function Home() {
   return (
     <>
       <h1 className="text-3xl font-bold underline">
-        <a href="/api/auth/login">Login</a>
-        <br/>
-        <a href="/api/auth/logout">Logout</a>
+        <Link href="/api/auth/login">Login</Link>
+        <br />
+        <Link href="/api/auth/logout">Logout</Link>
       </h1>
-      <Profile/>
+      <Profile />
     </>
-  )
+  );
 }

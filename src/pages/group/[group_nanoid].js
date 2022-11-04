@@ -1,4 +1,6 @@
 import { useState, useRef, useEffect } from "react";
+import Link from "next/link";
+
 import {
   Box,
   Flex,
@@ -7,7 +9,6 @@ import {
   Text,
   Divider,
   Avatar,
-  Link,
   Input,
   Button,
   useToast,
@@ -267,14 +268,14 @@ const GroupPage = () => {
                 <div className="sm:flex items-center px-4 py-2 sm:px-6 hover:bg-gray-50">
                   <div className="min-w-0 sm:flex sm:flex-1 sm:items-center sm:justify-between">
                     <div className="sm:flex-none sm:w-6/12">
-                      <a
+                      <Link
                         href={"/meeting/" + group_nanoid + "/" + item.nanoId}
                         className="hover:underline decoration-solid"
                       >
                         <p className="truncate font-medium text-indigo-600">
                           {item.name}
                         </p>
-                      </a>
+                      </Link>
                     </div>
                     <div className="flex sm:w-6/12 items-center text-sm text-gray-800">
                       <CalendarIcon
