@@ -16,15 +16,18 @@ export const createMeeting = async (token, groupNanoId, meetingInfo) => {
   return data;
 };
 
-// export const getGroups = async (token) => {
-//   console.log("queries/group.js/getGroups");
-//   const { data } = await instance.get(`${api_version}/groups/`, {
-//     headers: {
-//       Authorization: `Bearer ${token}`,
-//     },
-//   });
-//   return data;
-// };
+export const getMeetings = async (token, groupNanoId) => {
+  console.log("queries/group.js/getMeetings");
+  const { data } = await instance.get(
+    `${api_version}/meetings/${groupNanoId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return data;
+};
 
 // export const getGroup = async (token, group_nanoid) => {
 //   console.log("queries/group.js/getGroup");

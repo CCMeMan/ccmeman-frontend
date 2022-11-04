@@ -1,4 +1,4 @@
-import { createMeeting } from "/src/queries/meeting";
+import { createMeeting, getMeetings } from "/src/queries/meeting";
 import { getAccessToken, withApiAuthRequired } from "@auth0/nextjs-auth0";
 
 export default withApiAuthRequired(async function handler(req, res) {
@@ -9,9 +9,8 @@ export default withApiAuthRequired(async function handler(req, res) {
   } else {
     switch (req.method) {
       case "GET": {
-        // TODO: Impliment getMeeting()
-        // const response = await getMeeting(accessToken);
-        // return res.status(200).json(response);
+        const response = await getMeetings(accessToken, group_nanoid);
+        return res.status(200).json(response);
       }
       case "POST": {
         const meetingInfo = req.body;

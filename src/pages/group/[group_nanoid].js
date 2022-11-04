@@ -28,6 +28,13 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import ClipLoader from "react-spinners/ClipLoader";
+import {
+  CalendarIcon,
+  ChevronRightIcon,
+  TrashIcon,
+  PlusIcon,
+} from "@heroicons/react/20/solid";
+import { DateTime } from "luxon";
 
 // import Select, { StylesConfig, GroupBase } from "react-select";
 import axios from "axios";
@@ -58,6 +65,7 @@ const GroupPage = () => {
         isClosable: true,
       });
       getGroup();
+      getMeetings();
     } catch (e) {
       console.log(e);
       toast({
@@ -95,15 +103,12 @@ const GroupPage = () => {
     }
   };
 
-  const getGroups = async () => {
+  const getMeetings = async () => {
     try {
-      const { data } = await axios.get("/api/group", {});
-      //   data.map((item) => {
-      //     console.log(item);
-      //   });
-      setExistingGroups(data);
+      const { data } = await axios.get(`/api/meeting/${group_nanoid}`, {});
+      setExistingMeetings(data);
       toast({
-        title: "Get Group List Success",
+        title: "Get Meeting List Success",
         status: "success",
         duration: 3000,
         isClosable: true,
@@ -111,7 +116,7 @@ const GroupPage = () => {
     } catch (e) {
       console.log(e);
       toast({
-        title: "Get Group List Fail",
+        title: "Get Meeting List Fail",
         description: "Please try again or contact service.",
         status: "error",
         duration: 3000,
@@ -120,36 +125,61 @@ const GroupPage = () => {
     }
   };
 
-  const GroupItem = (props) => {
-    var isManager;
-    props.group.users.map((item) => {
-      if (item.user.userIdFromAuth0 === user.sub) {
-        if (Object.values(item.role).includes("MANAGER")) {
-          isManager = true;
-        }
-      }
-    });
-    return (
-      <HStack mx={4}>
-        <Flex>
-          <Link
-            my="0"
-            mx="4"
-            fontSize="xl"
-            fontWeight="700"
-            href={"group/" + props.group.nanoId}
-          >
-            {props.group.name}
-          </Link>
-          {/* {console.log("item")} */}
-        </Flex>
-        <Spacer />
-        <Button colorScheme="red" disabled={!isManager}>
-          Delete
-        </Button>
-      </HStack>
-    );
-  };
+  // const getGroups = async () => {
+  //   try {
+  //     const { data } = await axios.get("/api/group", {});
+  //     //   data.map((item) => {
+  //     //     console.log(item);
+  //     //   });
+  //     setExistingGroups(data);
+  //     toast({
+  //       title: "Get Group List Success",
+  //       status: "success",
+  //       duration: 3000,
+  //       isClosable: true,
+  //     });
+  //   } catch (e) {
+  //     console.log(e);
+  //     toast({
+  //       title: "Get Group List Fail",
+  //       description: "Please try again or contact service.",
+  //       status: "error",
+  //       duration: 3000,
+  //       isClosable: true,
+  //     });
+  //   }
+  // };
+
+  // const GroupItem = (props) => {
+  //   var isManager;
+  //   props.group.users.map((item) => {
+  //     if (item.user.userIdFromAuth0 === user.sub) {
+  //       if (Object.values(item.role).includes("MANAGER")) {
+  //         isManager = true;
+  //       }
+  //     }
+  //   });
+  //   return (
+  //     <HStack mx={4}>
+  //       <Flex>
+  //         <Link
+  //           my="0"
+  //           mx="4"
+  //           fontSize="xl"
+  //           fontWeight="700"
+  //           href={"group/" + props.group.nanoId}
+  //         >
+  //           {props.group.name}
+  //         </Link>
+  //         {/* {console.log("item")} */}
+  //       </Flex>
+  //       <Spacer />
+  //       <Button colorScheme="red" disabled={!isManager}>
+  //         Delete
+  //       </Button>
+  //     </HStack>
+  //   );
+  // };
 
   const MeetingItem = (props) => {
     var isManager;
@@ -196,19 +226,21 @@ const GroupPage = () => {
   const { user, error, isLoading } = useUser();
 
   // New Group Info States
-  const [newGroupName, setNewGroupName] = useState("");
+  // const [newGroupName, setNewGroupName] = useState("");
   const [newMeetingName, setNewMeetingName] = useState("");
 
   // Existing Group Info States
-  const [existingGroups, setExistingGroups] = useState([]);
+  // const [existingGroups, setExistingGroups] = useState([]);
   const [existingGroup, setExistingGroup] = useState({ meetings: [] });
-  // const [existingMeetings, setExistingMeetings] = useState([]);
+  const [existingMeetings, setExistingMeetings] = useState([]);
+  // const [isGettingMeetings, setIsGettingMeetings] = useState([]);
 
   //  Referesh current Group list.
   //  FIXME: We should separate getMeeting/Group and setExistingMeeting/Group (side effects)
   useEffect(() => {
-    getGroups();
+    // getGroups();
     getGroup();
+    getMeetings();
     console.log("effect");
   }, [isLoading]);
 
@@ -220,122 +252,141 @@ const GroupPage = () => {
     );
   }
   return (
-    <Box my={{ base: 5, md: 10, lg: 10 }} mx={{ base: 5, md: 10, lg: 40 }}>
-      <Text fontSize="4xl" fontWeight="700" color="gray.800">
-        Group: {existingGroup.name}
-      </Text>
-      <Divider mt="1" mb="4" />
-      <Flex p="4" />
+    <>
+      <div className="sm:px-4 lg:px-40 lg:pt-10 xl:px-60 2xl:px-80 2xl:pt-30">
+        <div className="border-b m-5 border-gray-200 pb-5">
+          <h3 className="text-2xl font-medium leading-6 text-gray-900">
+            Meetings in {existingGroup.name}
+          </h3>
+        </div>
+        <div className="overflow-hidden bg-white shadow sm:rounded-md m-5">
+          <ul role="list" className="divide-y divide-gray-200">
+            {existingMeetings?.map((item) => (
+              <li key={item.id}>
+                <div className="sm:flex items-center px-4 py-2 sm:px-6 hover:bg-gray-50">
+                  <div className="min-w-0 sm:flex sm:flex-1 sm:items-center sm:justify-between">
+                    <div className="sm:flex-none sm:w-6/12">
+                      <a
+                        href={"/meeting/" + group_nanoid + "/" + item.nanoId}
+                        className="hover:underline decoration-solid"
+                      >
+                        <p className="truncate font-medium text-indigo-600">
+                          {item.name}
+                        </p>
+                      </a>
+                    </div>
+                    <div className="sm:flex sm:w-6/12 items-center text-sm text-gray-800">
+                      <CalendarIcon
+                        className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
+                        aria-hidden="true"
+                      />
+                      <p>
+                        <time dateTime={item.time}>
+                          {DateTime.fromISO(item.time).toFormat(
+                            "y LLL.dd - HH:mm ZZZZ"
+                          )}
+                        </time>
+                      </p>
+                      {/* <p className="ml-1 flex-shrink-0 font-normal text-gray-500">
+                        aa
+                      </p> */}
+                    </div>
 
-      <Text fontSize="3xl" fontWeight="700" color="gray.800">
-        Meetings
-      </Text>
-      <Divider mt="1" mb="4" />
-      <VStack
-        mx={{ base: 5, md: 10 }}
-        divider={<StackDivider borderColor="gray.200" />}
-        spacing={2}
-        align="stretch"
-      >
-        <Grid w="100%" templateColumns="repeat(10, 1fr)" gap={5}>
-          <GridItem my={1} colStart={1} colEnd={6}>
-            <Text my="0" mx="4" fontSize="2xl" fontWeight="600">
-              Name
-            </Text>
-          </GridItem>
-          <GridItem my={1} colStart={6} colEnd={10}>
-            <Text fontSize="2xl" fontWeight="600">
-              Last Updated
-            </Text>
-          </GridItem>
-          <GridItem align="right">
-            {/* <Button colorScheme="red" disabled={!isManager}>
-              Delete
-            </Button> */}
-          </GridItem>
-        </Grid>
-
-        {/* <Text>{JSON.stringify(existingGroup.meetings)}</Text> */}
-        {existingGroup.meetings.map((item) => {
-          return <MeetingItem key={item.id} meeting={item} />;
-        })}
-
-        <Flex mx={0}>
-          <Input
-            mr={2}
-            type="text"
-            id="meeting-name"
-            placeholder="New Meeting Name"
-            onChange={(e) => {
-              setNewMeetingName(e.currentTarget.value);
-            }}
-          ></Input>
-          <Button
-            // variant="outline"
-            colorScheme="green"
-            onClick={async () => {
-              createMeeting();
-            }}
-          >
-            Create Meeting
-          </Button>
-        </Flex>
-      </VStack>
-      <Flex p="4" />
-
-      <Text fontSize="3xl" fontWeight="700" color="gray.800">
-        Sub-Groups
-      </Text>
-      <Divider mt="1" mb="4" />
-      {/* <VStack
-        mx={{ base: 5, md: 10 }}
-        divider={<StackDivider borderColor="gray.200" />}
-        spacing={2}
-        align="stretch"
-      >
-        <Text mx={4} fontSize="2xl" fontWeight="700" color="gray.800">
-          Name
-        </Text>
-
-        {existingGroups.map((item) => {
-          return <GroupItem key={item.id} group={item} />;
-        })}
-
-        <Flex mx={4}>
-          <Input
-            mr={2}
-            type="text"
-            id="group-name"
-            placeholder="Name"
-            onChange={(e) => {
-              setNewGroupName(e.currentTarget.value);
-            }}
-          ></Input>
-          <Button
-            colorScheme="green"
-            onClick={async () => {
-              // createGroup();
-            }}
-          >
-            Create Group{" "}
-          </Button>
-        </Flex>
-      </VStack> */}
-      <Flex p="4" />
-      <Text fontSize="3xl" fontWeight="700" color="gray.800">
-        Group Profile
-      </Text>
-      <Divider mt="1" mb="4" />
-      <Flex
-        mx={{ base: 5, md: 10 }}
-        divider={<StackDivider borderColor="gray.200" />}
-        spacing={2}
-        align="stretch"
-      >
-        {JSON.stringify(existingGroup)}
-      </Flex>
-      <Flex p="4" />
-    </Box>
+                    <div className="mt-4 flex-shrink-0 sm:mt-0 sm:ml-5">
+                      {/* <div className="flex -space-x-1 overflow-hidden">
+                        {position.applicants.map((applicant) => (
+                          <img
+                            key={applicant.email}
+                            className="inline-block h-6 w-6 rounded-full ring-2 ring-white"
+                            src={applicant.imageUrl}
+                            alt={applicant.name}
+                          />
+                        ))}
+                      </div> */}
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    className="hidden sm:inline-flex items-center rounded-md 
+                    disabled:opacity-50
+                      border border-transparent
+                       bg-red-600 px-4 py-2 text-sm font-medium
+                       text-white shadow-sm
+                       enabled:hover:bg-red-700 enabled:active:bg-red-800"
+                    // disabled
+                  >
+                    <TrashIcon
+                      className="-ml-1 mr-2 h-5 w-5"
+                      aria-hidden="true"
+                    />
+                    Delete
+                  </button>
+                  <div className="hidden sm:flex ml-5 sm:flex-shrink-0">
+                    <ChevronRightIcon
+                      className="h-5 w-5 text-gray-400"
+                      aria-hidden="true"
+                    />
+                  </div>
+                </div>
+              </li>
+            ))}
+            <li>
+              <div className="flex items-center px-4 py-4 sm:px-6 bg-gray-50">
+                <div className="min-w-0 flex-1 sm:flex sm:items-center sm:justify-between">
+                  <input
+                    placeholder="New Meeting Name"
+                    className="block w-full mr-10 px-4 h-10 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    onChange={(e) => {
+                      setNewMeetingName(e.currentTarget.value);
+                    }}
+                  />
+                </div>
+                <button
+                  type="button"
+                  className="inline-flex items-center rounded-md 
+                    disabled:opacity-50
+                      border border-transparent
+                       bg-indigo-500 px-4 py-2 text-sm font-medium
+                       text-white shadow-sm
+                       enabled:hover:bg-indigo-700 enabled:active:bg-indigo-800"
+                  onClick={async () => {
+                    createMeeting();
+                  }}
+                >
+                  <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+                  Create
+                </button>
+                <div className="ml-5 flex-shrink-0">
+                  <div className="h-5 w-5" aria-hidden="true" />
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div className="h-5"></div>
+        <div className="border-b m-5 border-gray-200 pb-5">
+          <h3 className="text-2xl font-medium leading-6 text-gray-900">
+            User Profile in {existingGroup.name}
+          </h3>
+        </div>
+        <div className="border-b m-5 border-gray-200 pb-5">
+          <h3 className="text-2xl font-medium leading-6 text-gray-900">
+            Group Setting
+          </h3>
+        </div>
+        <div className="border-b m-5 border-gray-200 pb-5">
+          <h3 className="text-2xl font-medium leading-6 text-gray-900">
+            Debug Info.
+          </h3>
+        </div>
+        <div className="text-gray-300 px-10">
+          {JSON.stringify(existingGroup)}
+          <br />
+          <br />
+          {JSON.stringify(existingMeetings)}
+        </div>
+      </div>
+    </>
   );
 };
 
