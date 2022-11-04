@@ -201,7 +201,8 @@ export default function UserGroupsPage() {
         </VStack>
       </Box> */}
 
-      <div className="sm:px-4 lg:px-40 lg:pt-10 xl:px-60 2xl:px-80 2xl:pt-30">
+      {/* <div className="sm:px-4 lg:px-40 lg:pt-10 xl:px-60 2xl:px-80 2xl:pt-30"> */}
+      <div className="mx-auto max-w-7xl">
         <div className="border-b m-5 border-gray-200 pb-5">
           <h3 className="text-2xl font-medium leading-6 text-gray-900">
             Groups
@@ -212,35 +213,33 @@ export default function UserGroupsPage() {
             {existingGroups?.map((item) => (
               <li key={item.id}>
                 <div className="flex items-center px-4 py-4 sm:px-6 hover:bg-gray-50">
-                  <div className="min-w-0 flex-1 sm:flex sm:items-center sm:justify-between">
+                  <div className="min-w-0 sm:flex-1 sm:items-center sm:justify-between">
                     <a
                       href={"group/" + item.nanoId}
                       className="hover:underline decoration-solid"
                     >
-                      <div className="truncate">
-                        <div className="flex text-sm">
-                          <p className="truncate font-medium text-indigo-600">
-                            {item.name}
+                      <div className="text-sm">
+                        <p className="truncate font-medium text-indigo-600">
+                          {item.name}
+                        </p>
+                        <p className="ml-1 flex-shrink-0 font-normal text-gray-500">
+                          {/* in [parentGroup] */}
+                        </p>
+                      </div>
+                      <div className="mt-2 flex">
+                        <div className="flex items-center text-sm text-gray-500">
+                          <CalendarIcon
+                            className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
+                            aria-hidden="true"
+                          />
+                          <p>
+                            Last updated on{" "}
+                            <time dateTime={item.updatedAt}>
+                              {DateTime.fromISO(item.updatedAt).toFormat(
+                                "y LLL. d HH:mm:ss ZZZZ"
+                              )}
+                            </time>
                           </p>
-                          <p className="ml-1 flex-shrink-0 font-normal text-gray-500">
-                            {/* in [parentGroup] */}
-                          </p>
-                        </div>
-                        <div className="mt-2 flex">
-                          <div className="flex items-center text-sm text-gray-500">
-                            <CalendarIcon
-                              className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
-                              aria-hidden="true"
-                            />
-                            <p>
-                              Last updated on{" "}
-                              <time dateTime={item.updatedAt}>
-                                {DateTime.fromISO(item.updatedAt).toFormat(
-                                  "y LLL. d HH:mm:ss ZZZZ"
-                                )}
-                              </time>
-                            </p>
-                          </div>
                         </div>
                       </div>
                       <div className="mt-4 flex-shrink-0 sm:mt-0 sm:ml-5">

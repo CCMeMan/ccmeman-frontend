@@ -253,7 +253,8 @@ const GroupPage = () => {
   }
   return (
     <>
-      <div className="sm:px-4 lg:px-40 lg:pt-10 xl:px-60 2xl:px-80 2xl:pt-30">
+      {/* <div className="sm:px-4 lg:px-40 lg:pt-10 xl:px-60 2xl:px-80 2xl:pt-30"> */}
+      <div className="mx-auto max-w-7xl">
         <div className="border-b m-5 border-gray-200 pb-5">
           <h3 className="text-2xl font-medium leading-6 text-gray-900">
             Meetings in {existingGroup.name}
