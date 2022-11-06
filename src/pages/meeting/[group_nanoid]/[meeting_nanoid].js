@@ -169,7 +169,7 @@ const Meeting = () => {
                 <h1 className="text-2xl font-bold text-gray-900">
                   {existingMeeting.name}
                 </h1>
-                <p className="text-sm font-medium text-gray-500">
+                <p className="text-sm font-medium text-gray-400">
                   Last updated on{" "}
                   <time dateTime={existingMeeting.updatedAt}>
                     {DateTime.fromISO(existingMeeting.updatedAt).toFormat(
@@ -229,38 +229,38 @@ const Meeting = () => {
                   <div className="border-t border-gray-200 px-4 py-5 sm:px-6">
                     <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
                       <div className="sm:col-span-1">
-                        <dt className="text-sm font-medium text-gray-500">
+                        <dt className="text-lg font-medium text-gray-500">
                           Meeting Time
                         </dt>
-                        <dd className="mt-1 text-sm text-gray-900">
+                        <dd className="mt-1 text-lg text-gray-900">
                           <time dateTime={existingMeeting.time}>
                             {DateTime.fromISO(existingMeeting.time).toFormat(
-                              "y LLL. dd - HH:mm ZZZZ"
+                              "y LLL. dd (EEE.) - HH:mm ZZZZ"
                             )}
                           </time>
                         </dd>
                       </div>
                       <div className="sm:col-span-1">
-                        <dt className="text-sm font-medium text-gray-500">
+                        <dt className="text-lg font-medium text-gray-500">
                           Location
                         </dt>
-                        <dd className="mt-1 text-sm text-gray-900">
+                        <dd className="mt-1 text-lg text-gray-900">
                           {existingMeeting?.location ?? "TBD"}
                         </dd>
                       </div>
                       <div className="sm:col-span-2">
-                        <dt className="text-sm font-medium text-gray-500">
+                        <dt className="text-lg font-medium text-gray-500">
                           Online Meeting Room Link
                         </dt>
-                        <dd className="mt-1 text-sm text-gray-900">
+                        <dd className="mt-1 text-lg text-gray-900">
                           {existingMeeting?.roomURL ?? "TBD"}
                         </dd>
                       </div>
                       <div className="sm:col-span-2">
-                        <dt className="text-sm font-medium text-gray-500">
+                        <dt className="text-lg font-medium text-gray-500">
                           About
                         </dt>
-                        <dd className="mt-1 text-sm text-gray-900">
+                        <dd className="mt-1 text-base text-gray-900">
                           {existingMeeting?.info ?? "No info."}
                         </dd>
                       </div>
