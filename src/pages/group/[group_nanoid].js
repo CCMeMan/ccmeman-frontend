@@ -254,47 +254,49 @@ const GroupPage = () => {
   }
   return (
     <>
-      {/* <div className="sm:px-4 lg:px-40 lg:pt-10 xl:px-60 2xl:px-80 2xl:pt-30"> */}
-      <div className="mx-auto max-w-7xl">
-        <div className="border-b m-5 border-gray-200 pb-5">
-          <h3 className="text-2xl font-medium leading-6 text-gray-900">
-            Meetings in {existingGroup.name}
-          </h3>
-        </div>
-        <div className="overflow-hidden bg-white shadow sm:rounded-md m-5">
-          <ul role="list" className="divide-y divide-gray-200">
-            {existingMeetings?.map((item) => (
-              <li key={item.id}>
-                <div className="sm:flex items-center px-4 py-2 sm:px-6 hover:bg-gray-50">
-                  <div className="min-w-0 sm:flex sm:flex-1 sm:items-center sm:justify-between">
-                    <div className="sm:flex-none sm:w-6/12">
-                      <Link
-                        href={"/meeting/" + group_nanoid + "/" + item.nanoId}
-                        className="hover:underline decoration-solid"
-                      >
-                        <p className="truncate font-medium text-indigo-600">
-                          {item.name}
+      <div className="min-h-full bg-gray-100">
+        {/* <div className="sm:px-4 lg:px-40 lg:pt-10 xl:px-60 2xl:px-80 2xl:pt-30"> */}
+
+        <div className="mx-auto max-w-7xl pt-6">
+          <div className="border-b m-5 border-gray-200 pb-5">
+            <h3 className="text-2xl font-medium leading-6 text-gray-900">
+              Meetings in {existingGroup.name}
+            </h3>
+          </div>
+          <div className="overflow-hidden bg-white shadow sm:rounded-md m-5">
+            <ul role="list" className="divide-y divide-gray-200">
+              {existingMeetings?.map((item) => (
+                <li key={item.id}>
+                  <div className="sm:flex items-center px-4 py-2 sm:px-6 hover:bg-gray-50">
+                    <div className="min-w-0 sm:flex sm:flex-1 sm:items-center sm:justify-between">
+                      <div className="sm:flex-none sm:w-6/12">
+                        <Link
+                          href={"/meeting/" + group_nanoid + "/" + item.nanoId}
+                          className="hover:underline decoration-solid"
+                        >
+                          <p className="truncate font-medium text-indigo-600">
+                            {item.name}
+                          </p>
+                        </Link>
+                      </div>
+                      <div className="flex sm:w-6/12 items-center text-sm text-gray-800">
+                        <CalendarIcon
+                          className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
+                          aria-hidden="true"
+                        />
+                        <p>
+                          <time dateTime={item.time}>
+                            {DateTime.fromISO(item.time).toFormat(
+                              "y LLL.dd - HH:mm ZZZZ"
+                            )}
+                          </time>
                         </p>
-                      </Link>
-                    </div>
-                    <div className="flex sm:w-6/12 items-center text-sm text-gray-800">
-                      <CalendarIcon
-                        className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
-                        aria-hidden="true"
-                      />
-                      <p>
-                        <time dateTime={item.time}>
-                          {DateTime.fromISO(item.time).toFormat(
-                            "y LLL.dd - HH:mm ZZZZ"
-                          )}
-                        </time>
-                      </p>
-                      {/* <p className="ml-1 flex-shrink-0 font-normal text-gray-500">
+                        {/* <p className="ml-1 flex-shrink-0 font-normal text-gray-500">
                         aa
                       </p> */}
-                    </div>
+                      </div>
 
-                    {/* <div className="mt-4 flex-shrink-0 sm:mt-0 sm:ml-5">
+                      {/* <div className="mt-4 flex-shrink-0 sm:mt-0 sm:ml-5">
                       <div className="flex -space-x-1 overflow-hidden">
                         {position.applicants.map((applicant) => (
                           <img
@@ -306,86 +308,91 @@ const GroupPage = () => {
                         ))}
                       </div>
                     </div> */}
+                    </div>
+                    <button
+                      type="button"
+                      className="hidden sm:inline-flex items-center rounded-md 
+                    disabled:opacity-50
+                      border border-red-500
+                       bg-white px-2 py-1 text-sm font-medium
+                       text-red-500 shadow-sm
+                       enabled:hover:text-white
+                       enabled:hover:bg-red-600 enabled:active:bg-red-700"
+                      // disabled
+                    >
+                      <TrashIcon
+                        className="-ml-1 mr-2 h-5 w-5"
+                        aria-hidden="true"
+                      />
+                      Delete
+                    </button>
+                    <div className="hidden sm:flex ml-5 sm:flex-shrink-0">
+                      <ChevronRightIcon
+                        className="h-5 w-5 text-gray-400"
+                        aria-hidden="true"
+                      />
+                    </div>
+                  </div>
+                </li>
+              ))}
+              <li>
+                <div className="flex items-center px-4 py-4 sm:px-6 bg-gray-50">
+                  <div className="min-w-0 flex-1 sm:flex sm:items-center sm:justify-between">
+                    <input
+                      placeholder="New Meeting Name"
+                      className="block w-full mr-10 px-4 h-10 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      onChange={(e) => {
+                        setNewMeetingName(e.currentTarget.value);
+                      }}
+                    />
                   </div>
                   <button
                     type="button"
-                    className="hidden sm:inline-flex items-center rounded-md 
+                    className="inline-flex items-center rounded-md 
                     disabled:opacity-50
                       border border-transparent
-                       bg-red-600 px-2 py-1 text-sm font-medium
+                       bg-indigo-600 px-4 py-2 text-sm font-medium
                        text-white shadow-sm
-                       enabled:hover:bg-red-700 enabled:active:bg-red-800"
-                    // disabled
+                       enabled:hover:bg-indigo-700 enabled:active:bg-indigo-800"
+                    onClick={async () => {
+                      createMeeting();
+                    }}
                   >
-                    <TrashIcon
+                    <PlusIcon
                       className="-ml-1 mr-2 h-5 w-5"
                       aria-hidden="true"
                     />
-                    Delete
+                    Create
                   </button>
-                  <div className="hidden sm:flex ml-5 sm:flex-shrink-0">
-                    <ChevronRightIcon
-                      className="h-5 w-5 text-gray-400"
-                      aria-hidden="true"
-                    />
+                  <div className="ml-5 flex-shrink-0">
+                    <div className="h-5 w-5" aria-hidden="true" />
                   </div>
                 </div>
               </li>
-            ))}
-            <li>
-              <div className="flex items-center px-4 py-4 sm:px-6 bg-gray-50">
-                <div className="min-w-0 flex-1 sm:flex sm:items-center sm:justify-between">
-                  <input
-                    placeholder="New Meeting Name"
-                    className="block w-full mr-10 px-4 h-10 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                    onChange={(e) => {
-                      setNewMeetingName(e.currentTarget.value);
-                    }}
-                  />
-                </div>
-                <button
-                  type="button"
-                  className="inline-flex items-center rounded-md 
-                    disabled:opacity-50
-                      border border-transparent
-                       bg-indigo-500 px-4 py-2 text-sm font-medium
-                       text-white shadow-sm
-                       enabled:hover:bg-indigo-700 enabled:active:bg-indigo-800"
-                  onClick={async () => {
-                    createMeeting();
-                  }}
-                >
-                  <PlusIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
-                  Create
-                </button>
-                <div className="ml-5 flex-shrink-0">
-                  <div className="h-5 w-5" aria-hidden="true" />
-                </div>
-              </div>
-            </li>
-          </ul>
-        </div>
-        <div className="h-5"></div>
-        <div className="border-b m-5 border-gray-200 pb-5">
-          <h3 className="text-2xl font-medium leading-6 text-gray-900">
-            User Profile in {existingGroup.name}
-          </h3>
-        </div>
-        <div className="border-b m-5 border-gray-200 pb-5">
-          <h3 className="text-2xl font-medium leading-6 text-gray-900">
-            Group Setting
-          </h3>
-        </div>
-        <div className="border-b m-5 border-gray-200 pb-5">
-          <h3 className="text-2xl font-medium leading-6 text-gray-900">
-            Debug Info.
-          </h3>
-        </div>
-        <div className="text-gray-300 px-10">
-          {JSON.stringify(existingGroup)}
-          <br />
-          <br />
-          {JSON.stringify(existingMeetings)}
+            </ul>
+          </div>
+          <div className="h-5"></div>
+          <div className="border-b m-5 border-gray-200 pb-5">
+            <h3 className="text-2xl font-medium leading-6 text-gray-900">
+              User Profile in {existingGroup.name}
+            </h3>
+          </div>
+          <div className="border-b m-5 border-gray-200 pb-5">
+            <h3 className="text-2xl font-medium leading-6 text-gray-900">
+              Group Setting
+            </h3>
+          </div>
+          <div className="border-b m-5 border-gray-200 pb-5">
+            <h3 className="text-2xl font-medium leading-6 text-gray-900">
+              Debug Info.
+            </h3>
+          </div>
+          <div className="text-gray-800 px-10">
+            {JSON.stringify(existingGroup)}
+            <br />
+            <br />
+            {JSON.stringify(existingMeetings)}
+          </div>
         </div>
       </div>
     </>

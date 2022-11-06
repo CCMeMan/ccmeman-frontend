@@ -29,23 +29,15 @@ export const getMeetings = async (token, groupNanoId) => {
   return data;
 };
 
-// export const getGroup = async (token, group_nanoid) => {
-//   console.log("queries/group.js/getGroup");
-//   const { data } = await instance.get(`${api_version}/groups/${group_nanoid}`, {
-//     headers: {
-//       Authorization: `Bearer ${token}`,
-//     },
-//   });
-//   return data;
-// };
-
-// export const updateUser = async (token, userInfo) => {
-//   console.log("queries/user.js/updateUser");
-//   console.log(userInfo);
-//   const { data } = await instance.put(`${api_version}/users/`, userInfo, {
-//     headers: {
-//       Authorization: `Bearer ${token}`,
-//     },
-//   });
-//   return data;
-// };
+export const getMeeting = async (token, meetingNanoId) => {
+  console.log("queries/group.js/getMeeting");
+  const { data } = await instance.get(
+    `${api_version}/meetings/?meeting-nano-id=${meetingNanoId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return data;
+};
