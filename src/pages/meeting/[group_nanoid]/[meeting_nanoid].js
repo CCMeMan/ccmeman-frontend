@@ -15,6 +15,7 @@ import {
   QuestionMarkCircleIcon,
   UserIcon,
   CalendarDaysIcon,
+  CalendarIcon,
   TrashIcon,
 } from "@heroicons/react/20/solid";
 import {
@@ -36,6 +37,9 @@ import {
 
 // import "react-datepicker/dist/react-datepicker.css";
 // import "src/styles/date-picker.module.css";
+
+import { atcb_action } from "add-to-calendar-button";
+import "add-to-calendar-button/assets/css/atcb.css";
 
 const Meeting = () => {
   const toast = useToast();
@@ -70,6 +74,41 @@ const Meeting = () => {
     }
   };
 
+  const AddToCalendar = (props) => {
+    const meetingStartDateTime = DateTime.fromISO(
+      existingMeeting?.time ?? DateTime.now()
+    );
+    const meetingEndDateTime = existingMeeting?.endTime
+      ? DateTime.fromISO(existingMeeting?.endTime)
+      : meetingStartDateTime.plus({ hours: 1 });
+
+    return atcb_action({
+      name: existingMeeting?.name ?? " ",
+      startDate: meetingStartDateTime.toFormat("y-MM-dd"),
+      endDate: meetingEndDateTime.toFormat("y-MM-dd"),
+      startTime: meetingStartDateTime.toFormat("HH:mm"),
+      endTime: meetingEndDateTime.toFormat("HH:mm"),
+      location: existingMeeting?.location ?? "TBD",
+      description:
+        "Online Meeting Link: " +
+        (existingMeeting.roomURL ?? "TBD") +
+        "<br/><br/>" +
+        (existingMeeting?.info ?? "No detail information."),
+      options: [
+        "Apple",
+        "Google",
+        "iCal",
+        "Microsoft365",
+        "Outlook.com",
+        // "Yahoo",
+      ],
+      timeZone: DateTime.fromISO(
+        existingMeeting?.time ?? DateTime.now()
+      ).toFormat("z"),
+      iCalFileName: existingMeeting?.name ?? "MeetingEvent",
+    });
+  };
+
   // FIXME: There should be better way to handle "isLoading"
   useEffect(() => {
     if (router.isReady) {
@@ -88,7 +127,7 @@ const Meeting = () => {
   }
   return (
     <>
-      <div className="min-h-full bg-gray-100">
+      <div className=" min-h-full bg-gray-100">
         {/* <header className="bg-white shadow">
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
             <div className="border-t border-gray-200 py-3">
@@ -149,7 +188,6 @@ const Meeting = () => {
             </div>
           </div>
         </header> */}
-
         <main className="py-10">
           {/* Page header */}
           <div className="mx-auto max-w-3xl px-4 sm:px-6 md:flex md:items-center md:justify-between md:space-x-5 lg:max-w-7xl lg:px-8">
@@ -194,6 +232,7 @@ const Meeting = () => {
                 <TrashIcon className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
                 Delete Meeting
               </button>
+
               <button
                 type="button"
                 className="inline-flex items-center justify-center 
@@ -215,13 +254,28 @@ const Meeting = () => {
               {/* Description list*/}
               <section aria-labelledby="applicant-information-title">
                 <div className="bg-white shadow sm:rounded-lg">
-                  <div className="px-4 py-5 sm:px-6">
+                  <div className="flex items-center justify-between px-4 py-4 sm:px-6">
                     <h2
                       id="applicant-information-title"
                       className="text-lg font-medium leading-6 text-gray-900"
                     >
                       Meeting Details
                     </h2>
+                    <button
+                      type="button"
+                      onClick={AddToCalendar}
+                      className="inline-flex items-center justify-center 
+                           rounded-md border border-indigo-600
+                         bg-white px-4 py-2 text-sm font-medium
+                           text-indigo-600
+                         hover:text-white shadow-sm hover:bg-indigo-700 active:bg-indigo-800"
+                    >
+                      <CalendarIcon
+                        className="-ml-1 mr-2 h-5 w-5"
+                        aria-hidden="true"
+                      />
+                      Add to Calendar
+                    </button>
                     {/* <p className="mt-1 max-w-2xl text-sm text-gray-500">
                       Personal details and application.
                     </p> */}
@@ -230,14 +284,22 @@ const Meeting = () => {
                     <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
                       <div className="sm:col-span-1">
                         <dt className="text-lg font-medium text-gray-500">
-                          Meeting Time
+                          Meeting Start Time
                         </dt>
-                        <dd className="mt-1 text-lg text-gray-900">
+                        <dd className="mt-1 text-lg text-indigo-600">
                           <time dateTime={existingMeeting.time}>
                             {DateTime.fromISO(existingMeeting.time).toFormat(
                               "y LLL. dd (EEE.) - HH:mm ZZZZ"
                             )}
                           </time>
+                        </dd>
+                      </div>
+                      <div className="sm:col-span-1">
+                        <dt className="text-lg font-medium text-gray-500">
+                          End Time
+                        </dt>
+                        <dd className="mt-1 text-lg text-gray-900">
+                          Not supported yet
                         </dd>
                       </div>
                       <div className="sm:col-span-1">
@@ -248,6 +310,7 @@ const Meeting = () => {
                           {existingMeeting?.location ?? "TBD"}
                         </dd>
                       </div>
+
                       <div className="sm:col-span-2">
                         <dt className="text-lg font-medium text-gray-500">
                           Online Meeting Room Link
@@ -322,99 +385,15 @@ const Meeting = () => {
                         id="notes-title"
                         className="text-lg font-medium text-gray-900"
                       >
-                        Notes
+                        Links
                       </h2>
                     </div>
                     <div className="px-4 py-6 sm:px-6">
-                      <ul role="list" className="space-y-8">
-                        {comments.map((comment) => (
-                          <li key={comment.id}>
-                            <div className="flex space-x-3">
-                              <div className="flex-shrink-0">
-                                <img
-                                  className="h-10 w-10 rounded-full"
-                                  src={`https://images.unsplash.com/photo-${comment.imageId}?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80`}
-                                  alt=""
-                                />
-                              </div>
-                              <div>
-                                <div className="text-sm">
-                                  <a
-                                    href="#"
-                                    className="font-medium text-gray-900"
-                                  >
-                                    {comment.name}
-                                  </a>
-                                </div>
-                                <div className="mt-1 text-sm text-gray-700">
-                                  <p>{comment.body}</p>
-                                </div>
-                                <div className="mt-2 space-x-2 text-sm">
-                                  <span className="font-medium text-gray-500">
-                                    {comment.date}
-                                  </span>{" "}
-                                  <span className="font-medium text-gray-500">
-                                    &middot;
-                                  </span>{" "}
-                                  <button
-                                    type="button"
-                                    className="font-medium text-gray-900"
-                                  >
-                                    Reply
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                          </li>
-                        ))}
-                      </ul>
+                      <li>link</li>
                     </div>
                   </div>
                   <div className="bg-gray-50 px-4 py-6 sm:px-6">
-                    <div className="flex space-x-3">
-                      <div className="flex-shrink-0">
-                        <img
-                          className="h-10 w-10 rounded-full"
-                          src={user.imageUrl}
-                          alt=""
-                        />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <form action="#">
-                          <div>
-                            <label htmlFor="comment" className="sr-only">
-                              About
-                            </label>
-                            <textarea
-                              id="comment"
-                              name="comment"
-                              rows={3}
-                              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                              placeholder="Add a note"
-                              defaultValue={""}
-                            />
-                          </div>
-                          <div className="mt-3 flex items-center justify-between">
-                            <a
-                              href="#"
-                              className="group inline-flex items-start space-x-2 text-sm text-gray-500 hover:text-gray-900"
-                            >
-                              <QuestionMarkCircleIcon
-                                className="h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
-                                aria-hidden="true"
-                              />
-                              <span>Some HTML is okay.</span>
-                            </a>
-                            <button
-                              type="submit"
-                              className="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                            >
-                              Comment
-                            </button>
-                          </div>
-                        </form>
-                      </div>
-                    </div>
+                    Add Link Add Link Button
                   </div>
                 </div>
               </section>
@@ -424,78 +403,83 @@ const Meeting = () => {
               aria-labelledby="timeline-title"
               className="lg:col-span-1 lg:col-start-3"
             >
-              <div className="bg-white px-4 py-5 shadow sm:rounded-lg sm:px-6">
+              <div className="divide-y divide-gray-200 bg-white shadow sm:rounded-lg ">
                 <h2
                   id="timeline-title"
-                  className="text-lg font-medium text-gray-900"
+                  className="text-lg font-medium text-gray-900 px-4 py-5 sm:px-6"
                 >
-                  Timeline
+                  Participants
                 </h2>
 
                 {/* Activity Feed */}
-                <div className="mt-6 flow-root">
-                  <ul role="list" className="-mb-8">
-                    {timeline.map((item, itemIdx) => (
-                      <li key={item.id}>
-                        <div className="relative pb-8">
-                          {itemIdx !== timeline.length - 1 ? (
-                            <span
-                              className="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200"
-                              aria-hidden="true"
-                            />
-                          ) : null}
-                          <div className="relative flex space-x-3">
-                            <div>
-                              <span
-                                className={classNames(
-                                  item.type.bgColorClass,
-                                  "h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white"
-                                )}
-                              >
-                                <item.type.icon
-                                  className="h-5 w-5 text-white"
-                                  aria-hidden="true"
+                <div className="px-4 sm:px-6">
+                  <div>
+                    <div className="mt-6 ">
+                      <ul
+                        role="list"
+                        className="-my-5 divide-y divide-gray-200"
+                      >
+                        {existingMeeting?.users?.map((item) => (
+                          <li key={1} className="py-4">
+                            <div className="flex items-center space-x-4">
+                              <div className="flex-shrink-0">
+                                <img
+                                  className="h-8 w-8 rounded-full"
+                                  src={user.picture}
+                                  alt=""
                                 />
-                              </span>
-                            </div>
-                            <div className="flex min-w-0 flex-1 justify-between space-x-4 pt-1.5">
-                              <div>
-                                <p className="text-sm text-gray-500">
-                                  {item.content}{" "}
-                                  <a
-                                    href="#"
-                                    className="font-medium text-gray-900"
-                                  >
-                                    {item.target}
-                                  </a>
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <p className="truncate text-sm font-medium text-gray-900">
+                                  {item.user.name}
+                                </p>
+                                <p className="truncate text-sm text-gray-500">
+                                  {item.user.email}
+                                  {/*FIXME: Shoudl be publicEmail in group/meeting*/}
                                 </p>
                               </div>
-                              <div className="whitespace-nowrap text-right text-sm text-gray-500">
-                                <time dateTime={item.datetime}>
-                                  {item.date}
-                                </time>
+                              <div>
+                                <a
+                                  href="#"
+                                  className="inline-flex items-center rounded-full border border-gray-300 bg-white px-2.5 py-0.5 text-sm font-medium leading-5 text-gray-700 shadow-sm hover:bg-gray-50"
+                                >
+                                  {item.role}
+                                </a>
                               </div>
                             </div>
-                          </div>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
                 </div>
-                <div className="justify-stretch mt-6 flex flex-col">
-                  <button
-                    type="button"
-                    className="inline-flex items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                  >
-                    Advance to offer
-                  </button>
+                <div className="justify-stretch mt-6 flex flex-col bg-gray-100">
+                  <div className="mt-4 px-4  sm:px-6">
+                    <input
+                      type="email"
+                      name="email"
+                      id="email"
+                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      placeholder="Email of new member"
+                    />
+                  </div>
+                  <div className="flex  my-4 px-4 sm:px-6">
+                    <button
+                      type="button"
+                      className="inline-flex flex-grow items-center justify-center rounded-md border border-transparent
+                                bg-indigo-600 px-4 py-2 text-sm font-medium
+                                text-white shadow-sm hover:bg-indigo-700 active:bg-indigo-800"
+                    >
+                      Add New Member
+                    </button>
+                  </div>
                 </div>
               </div>
             </section>
           </div>
         </main>
       </div>
-      <p>
+      {/* <p>
         Group: {group_nanoid}, Meeting {meeting_nanoid}
       </p>
 
@@ -503,7 +487,7 @@ const Meeting = () => {
         selected={startDate}
         onChange={(date) => setStartDate(date)}
       />
-      {JSON.stringify(existingMeeting)}
+      {JSON.stringify(existingMeeting)} */}
     </>
   );
 };
