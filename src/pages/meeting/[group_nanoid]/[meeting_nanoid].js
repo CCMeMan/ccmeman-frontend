@@ -387,6 +387,10 @@ const Meeting = () => {
                       >
                         Links
                       </h2>
+                      <p className="text-gray-500 text-sm">
+                        Add links to minutes and slides from Google Drive,
+                        Dropbox, HackMD, ...
+                      </p>
                     </div>
                     <div className="px-4 py-6 sm:px-6">
                       <li>link</li>
