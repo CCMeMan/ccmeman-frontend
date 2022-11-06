@@ -254,7 +254,7 @@ const GroupPage = () => {
   }
   return (
     <>
-      <div className="min-h-full bg-gray-100">
+      <div className="min-h-full0">
         {/* <div className="sm:px-4 lg:px-40 lg:pt-10 xl:px-60 2xl:px-80 2xl:pt-30"> */}
 
         <div className="mx-auto max-w-7xl pt-6">

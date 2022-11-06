@@ -127,7 +127,7 @@ const Meeting = () => {
   }
   return (
     <>
-      <div className=" min-h-full bg-gray-100">
+      <div className=" min-h-full">
         {/* <header className="bg-white shadow">
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
             <div className="border-t border-gray-200 py-3">
