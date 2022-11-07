@@ -432,18 +432,9 @@ const GroupPage = () => {
                       </li>
                     </ul>
                   </div>
-                  {/* <div>
-                    <a
-                      href="#"
-                      className="block bg-gray-50 px-4 py-4 text-center text-sm font-medium text-gray-500 hover:text-gray-700 sm:rounded-b-lg"
-                    >
-                      Read full application
-                    </a>
-                  </div> */}
                 </div>
               </section>
 
-              {/* Comments*/}
               <section aria-labelledby="notes-title">
                 <div className="bg-white shadow sm:overflow-hidden sm:rounded-lg">
                   <div className="divide-y divide-gray-200">
@@ -459,11 +450,146 @@ const GroupPage = () => {
                       </p>
                     </div>
                     <div className="px-4 py-6 sm:px-6">
-                      <li>link</li>
+                      <p>Not supported yet.</p>
                     </div>
                   </div>
                   <div className="bg-gray-50 px-4 py-6 sm:px-6">
                     Add Link Add Link Button
+                  </div>
+                </div>
+              </section>
+
+              <section aria-labelledby="notes-title">
+                <div className="bg-white shadow sm:overflow-hidden sm:rounded-lg">
+                  <div className="divide-y divide-gray-200">
+                    <div className="px-4 py-5 sm:px-6">
+                      <h2
+                        id="notes-title"
+                        className="text-lg font-medium text-gray-900"
+                      >
+                        Group Setting
+                      </h2>
+                      <p className="text-gray-500 text-sm">
+                        Use sub-groups as folders of meetings.
+                      </p>
+                    </div>
+                    <div className="px-4 py-6 sm:px-6">
+                      <div className="mt-5 md:col-span-2 md:mt-0">
+                        <div className="grid grid-cols-6 gap-6">
+                          <div className="col-span-6 sm:col-span-3">
+                            <label
+                              htmlFor="name"
+                              className="block text-sm font-medium text-gray-700"
+                            >
+                              Group Name
+                            </label>
+                            <input
+                              type="text"
+                              name="name"
+                              id="name"
+                              autoComplete="name"
+                              defaultValue={existingGroup.name}
+                              onChange={(e) => {
+                                // setName(e.currentTarget.value);
+                              }}
+                              className="disabled:opacity-50 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="bg-gray-50 px-4 py-3 sm:px-6 text-right">
+                    <button
+                      // type="submit"
+                      onClick={async () => {
+                        // updateUser();
+                      }}
+                      className="inline-flex justify-center rounded-md border border-transparent
+                               bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm
+                               hover:bg-indigo-700 active:bg-indigo-800"
+                    >
+                      Update
+                    </button>
+                  </div>
+                </div>
+              </section>
+              <section aria-labelledby="notes-title">
+                <div className="bg-white shadow sm:overflow-hidden sm:rounded-lg">
+                  <div className="divide-y divide-gray-200">
+                    <div className="px-4 py-5 sm:px-6">
+                      <h2
+                        id="notes-title"
+                        className="text-lg font-medium text-gray-900"
+                      >
+                        Group User Infomation
+                      </h2>
+                      <p className="text-gray-500 text-sm">
+                        These settings will be the default value used in
+                        meetings created under this group.
+                      </p>
+                    </div>
+                    <div className="px-4 py-6 sm:px-6">
+                      <div className="mt-5 md:col-span-2 md:mt-0">
+                        <div className="grid grid-cols-6 gap-6">
+                          {/* <div className="col-span-6 sm:col-span-3">
+                            <label
+                              htmlFor="name"
+                              className="block text-sm font-medium text-gray-700"
+                            >
+                              Public Display Name
+                            </label>
+                            <input
+                              type="text"
+                              name="name"
+                              id="name"
+                              autoComplete="name"
+                              disabled
+                              defaultValue={user?.name}
+                              onChange={(e) => {
+                                // setName(e.currentTarget.value);
+                              }}
+                              className="disabled:opacity-50 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            />
+                          </div> */}
+                          <div className="col-span-6 sm:col-span-4">
+                            <label
+                              htmlFor="email-address"
+                              className="block text-sm font-medium text-gray-700"
+                            >
+                              Your Default Public Email
+                            </label>
+
+                            <input
+                              type="text"
+                              name="email-address"
+                              id="email-address"
+                              // autoComplete="email"
+                              defaultValue={user?.email} // FIXME: TODO: use public email instead.
+                              disabled
+                              className="disabled:opacity-50  mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            />
+                            <p className="text-xs text-gray-500">
+                              For example, you may want to display
+                              user@myschool.edu in this group.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="bg-gray-50 px-4 py-3 sm:px-6 text-right">
+                    <button
+                      // type="submit"
+                      onClick={async () => {
+                        // updateUser();
+                      }}
+                      className="inline-flex justify-center rounded-md border border-transparent
+                               bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm
+                               hover:bg-indigo-700 active:bg-indigo-800"
+                    >
+                      Update
+                    </button>
                   </div>
                 </div>
               </section>
@@ -552,130 +678,6 @@ const GroupPage = () => {
         {/* <div className="sm:px-4 lg:px-40 lg:pt-10 xl:px-60 2xl:px-80 2xl:pt-30"> */}
 
         <div className="mx-auto max-w-7xl pt-6">
-          <div className="border-b m-5 border-gray-200 pb-5">
-            <h3 className="text-2xl font-medium leading-6 text-gray-900">
-              Meetings in {existingGroup.name}
-            </h3>
-          </div>
-          <div className="overflow-hidden bg-white shadow sm:rounded-md m-5">
-            <ul role="list" className="divide-y divide-gray-200">
-              {existingMeetings?.map((item) => (
-                <li key={item.id}>
-                  <div className="sm:flex items-center px-4 py-2 sm:px-6 hover:bg-gray-50">
-                    <div className="min-w-0 sm:flex sm:flex-1 sm:items-center sm:justify-between">
-                      <div className="sm:flex-none sm:w-6/12">
-                        <Link
-                          href={"/meeting/" + group_nanoid + "/" + item.nanoId}
-                          className="hover:underline decoration-solid"
-                        >
-                          <p className="truncate font-medium text-indigo-600">
-                            {item.name}
-                          </p>
-                        </Link>
-                      </div>
-                      <div className="flex sm:w-6/12 items-center text-sm text-gray-800">
-                        <CalendarIcon
-                          className="mr-1.5 h-5 w-5 flex-shrink-0 text-gray-400"
-                          aria-hidden="true"
-                        />
-                        <p>
-                          <time dateTime={item.time}>
-                            {DateTime.fromISO(item.time).toFormat(
-                              "y LLL.dd - HH:mm ZZZZ"
-                            )}
-                          </time>
-                        </p>
-                        {/* <p className="ml-1 flex-shrink-0 font-normal text-gray-500">
-                        aa
-                      </p> */}
-                      </div>
-
-                      {/* <div className="mt-4 flex-shrink-0 sm:mt-0 sm:ml-5">
-                      <div className="flex -space-x-1 overflow-hidden">
-                        {position.applicants.map((applicant) => (
-                          <img
-                            key={applicant.email}
-                            className="inline-block h-6 w-6 rounded-full ring-2 ring-white"
-                            src={applicant.imageUrl}
-                            alt={applicant.name}
-                          />
-                        ))}
-                      </div>
-                    </div> */}
-                    </div>
-                    <button
-                      type="button"
-                      className="hidden sm:inline-flex items-center rounded-md 
-                    disabled:opacity-50
-                      border border-red-500
-                       bg-white px-2 py-1 text-sm font-medium
-                       text-red-500 shadow-sm
-                       enabled:hover:text-white
-                       enabled:hover:bg-red-600 enabled:active:bg-red-700"
-                      // disabled
-                    >
-                      <TrashIcon
-                        className="-ml-1 mr-2 h-5 w-5"
-                        aria-hidden="true"
-                      />
-                      Delete
-                    </button>
-                    <div className="hidden sm:flex ml-5 sm:flex-shrink-0">
-                      <ChevronRightIcon
-                        className="h-5 w-5 text-gray-400"
-                        aria-hidden="true"
-                      />
-                    </div>
-                  </div>
-                </li>
-              ))}
-              <li>
-                <div className="flex items-center px-4 py-4 sm:px-6 bg-gray-50">
-                  <div className="min-w-0 flex-1 sm:flex sm:items-center sm:justify-between">
-                    <input
-                      placeholder="New Meeting Name"
-                      className="block w-full mr-10 px-4 h-10 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                      onChange={(e) => {
-                        setNewMeetingName(e.currentTarget.value);
-                      }}
-                    />
-                  </div>
-                  <button
-                    type="button"
-                    className="inline-flex items-center rounded-md 
-                    disabled:opacity-50
-                      border border-transparent
-                       bg-indigo-600 px-4 py-2 text-sm font-medium
-                       text-white shadow-sm
-                       enabled:hover:bg-indigo-700 enabled:active:bg-indigo-800"
-                    onClick={async () => {
-                      createMeeting();
-                    }}
-                  >
-                    <PlusIcon
-                      className="-ml-1 mr-2 h-5 w-5"
-                      aria-hidden="true"
-                    />
-                    Create
-                  </button>
-                  <div className="ml-5 flex-shrink-0">
-                    <div className="h-5 w-5" aria-hidden="true" />
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </div>
-          <div className="h-5"></div>
-          <div className="border-b m-5 border-gray-200 pb-5">
-            <h3 className="text-2xl font-medium leading-6 text-gray-900">
-              User Profile in {existingGroup.name}
-            </h3>
-          </div>
-          <div className="border-b m-5 border-gray-200 pb-5">
-            <h3 className="text-2xl font-medium leading-6 text-gray-900">
-              Group Setting
-            </h3>
-          </div>
           <div className="border-b m-5 border-gray-200 pb-5">
             <h3 className="text-2xl font-medium leading-6 text-gray-900">
               Debug Info.
